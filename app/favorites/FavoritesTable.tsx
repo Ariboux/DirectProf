@@ -58,7 +58,9 @@ const FavoritesTable: React.FC<FavoritesTableProps> = ({
         </thead>
         <tbody>
         {courses.map((course,count) => (
-                <tr className={`
+                <tr
+                key={course.id}
+                className={`
                 ${count % 2 === 0 ? (theme==='dark'? 'bg-neutral-700' : 'bg-neutral-100') : (theme==='dark'? 'bg-neutral-800' : 'bg-neutral-200')}
                 `}>
                     <td className="border px-4 py-2">{course.subjectId}</td>

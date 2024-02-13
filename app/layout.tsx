@@ -24,7 +24,7 @@ const font = Nunito({
 
 export default async function RootLayout({
   children
-} : {
+}: {
   children: React.ReactNode
 }) {
   const currentUser = await getCurrentUser();
@@ -34,17 +34,17 @@ export default async function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <Providers>
-        <ToasterProvider />
-        <LoginModal />
-        <RegisterModal />
-        <TeacherRegisterModal />
-        <TeacherLoginModal />
-        <CreateCourseModal subjects={subjects} />
-        <Navbar currentUser={currentUser} currentTeacher={currentTeacher} />
-        <div className='pb-20 pt-24'>
+          <ToasterProvider />
+          <LoginModal />
+          <RegisterModal />
+          <TeacherRegisterModal />
+          <TeacherLoginModal />
+          <CreateCourseModal subjects={subjects} />
+          <Navbar currentUser={currentUser} currentTeacher={currentTeacher} />
+          <div className='pb-20 pt-24'>
             {children}
-        </div>
-      </Providers>
+          </div>
+        </Providers>
       </body>
     </html>
   )

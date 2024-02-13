@@ -25,7 +25,7 @@ export default async function getCourseById(
             throw new Error('Course not found');
         }
 
-        return {
+        return course;/* {
             ... course,
             createdAt: course.createdAt.toISOString(),
             // user: {
@@ -34,7 +34,7 @@ export default async function getCourseById(
             //     updatedAt: course.user.updatedAt.toISOString(),
             //     emailVerified: course.user.emailVerified?.toISOString()
             // }
-        };
+        };*/
     } catch (error) {
         throw error;
     }

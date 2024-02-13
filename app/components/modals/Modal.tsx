@@ -4,6 +4,7 @@ import { use, useCallback, useEffect, useRef, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import Button from "../Button";
 import { useTheme } from "next-themes";
+import Draggable from 'react-draggable';
 
 interface ModalProps {
     isOpen?: boolean;
@@ -32,8 +33,8 @@ const Modal: React.FC<ModalProps> = ({
 }) => {
     const [showModal, setShowModal] = useState(isOpen);
     const ref = useRef<HTMLDivElement | null>(null);
-    const { theme } = useTheme();
-  
+    const { theme } = useTheme();    
+
     useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
         if (ref.current && !ref.current.contains(event.target as Node)) {
@@ -112,6 +113,10 @@ const Modal: React.FC<ModalProps> = ({
                 md:h-auto
                 "
                 >
+                    <Draggable
+                    handle="#draggable"
+                    scale={1}
+                    >
                     {/*content*/}
                     <div
                     ref={ref}
@@ -151,7 +156,10 @@ const Modal: React.FC<ModalProps> = ({
                         `}>
                             {/*header*/}
                             <div
-                            className="
+                            id="draggable"
+                            className={`
+                            cursor-grab
+                            select-none
                             flex
                             items-center
                             p-6
@@ -159,18 +167,18 @@ const Modal: React.FC<ModalProps> = ({
                             justify-center
                             relative
                             border-b-[1px]
-                            "
+                            `}
                             >
                                 <button
                                 onClick={handleClose}
-                                className="
+                                className={`
                                 p-1
                                 border-0
                                 hover:opacity-70
                                 transition
                                 absolute
                                 left-9
-                                "
+                                `}
                                 >
                                     <IoMdClose size={18}/>
                                 </button>
@@ -210,6 +218,8 @@ const Modal: React.FC<ModalProps> = ({
                                 </div>
                             </div>
                         </div>
+                        </Draggable>
+
                     </div>
                 </div>
         </>

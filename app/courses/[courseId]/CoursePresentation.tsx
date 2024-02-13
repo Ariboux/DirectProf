@@ -9,6 +9,7 @@ import { SafeUser } from "@/app/types";
 
 import React from "react"; 
 import Image from "next/image";
+import useEnrollCourseModal from "@/app/hooks/useEnrollCourseModal";
 
 
 interface CoursePresentationProps {
@@ -32,6 +33,7 @@ const CoursePresentation: React.FC<CoursePresentationProps> = ({
     teacherName,
     teacherImage='/images/placeholder.jpg',
 }) => {
+    const enrollCourseModal = useEnrollCourseModal();
     return (
         <Container>
         <div className="
@@ -65,7 +67,7 @@ const CoursePresentation: React.FC<CoursePresentationProps> = ({
             </div>
             <Button
             label="Enroll"
-            onClick={() => console.log('Enroll')}
+            onClick={enrollCourseModal.onOpen}
             notLarge
             />
         </div>

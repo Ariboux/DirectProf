@@ -4,16 +4,15 @@ import useEnrollCourseModal from "@/app/hooks/useEnrollCourseModal";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, set, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Modal from "./Modal";
 import Heading from "../Heading";
-import Input from "../inputs/Input";
-import Search from "../navbar/Search";
 import SubjectButton from "../inputs/SubjectButton";
-import ImageUpload from "../inputs/ImageUpload";
-import { Course, User } from "@prisma/client";
+import { Course } from "@prisma/client";
 import { SafeUser } from "@/app/types";
+import { useTheme } from "next-themes";
+import Calendar from "../inputs/Calendar";
 
 interface EnrollCourseModalProps {
     course: Course | null;
@@ -30,12 +29,20 @@ enum STEPS {
 
 const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
     course,
-    student
+    student,
+    teacherName
 }) => {
     const router = useRouter();
     const enrollCourseModal = useEnrollCourseModal();
     const [isLoading, setIsLoading] = useState(false);
     const [step, setStep] = useState(STEPS.RECAP);
+    const { theme } = useTheme();
+    const [dateSelect, setDate] = useState(new Date());
+    
+    if(!course || !student) {
+        toast.error('An error occurred while enrolling the course.');
+        return null;
+    }
 
     const {
         register,
@@ -51,8 +58,7 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
             
         }
     });
-    // const price = watch('price');
-    // const tags = watch('tags');
+
     const date = watch('date');
     const question = watch('question');
 
@@ -79,9 +85,9 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
 
         setIsLoading(true);
 
-        axios.post('/api/courses', data)
+        axios.post('/api/enroll', data)
         .then((response) => {
-            toast.success('Course enrolld successfully!');
+            toast.success('Course enrolled successfully!');
             router.refresh();
             reset();
             setStep(STEPS.RECAP);
@@ -99,38 +105,80 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
     }
 
     const actionLabel = useMemo(() => {
-        if (step === STEPS.QUESTION) {
-            return 'Enroll';
-        }
-
-        return 'Next';
+        return step === STEPS.QUESTION ? 'Enroll' : 'Next';
     }, [step]);
 
     const secondaryActionLabel = useMemo(() => {
-        if (step === STEPS.RECAP) {
-            return undefined;
-        }
-
-        return 'Back';
+        return step === STEPS.RECAP ? undefined : 'Back';
     }, [step]);
 
     let bodyContent = (
         <div className="flex flex-col gap-8">
             <Heading
-            title="What subject does your course belong to?"
-            subtitle="Pick a subject"
+            title="Verify your course informations"
+            subtitle={`Connected as ${student.name}`}
             />
             <div
             className="
-            grid
-            grid-cols-1
-            md:grid-cols-2
-            gap-4
-            max-h-[50vh]
-            overflow-y-auto
-            justify-items-center
+            flex
+            flex-row
+            gap-8
+            items-center
+            justify-center
+            border-2
+            rounded-md
+            py-3
             ">
-                {course?.title}
+                <tbody>
+                    <tr
+                    className="
+                    w-full
+                    flex
+                    flex-row
+                    gap-8
+                    items-center
+                    "
+                    >
+                        <td>
+                        Course name
+                        </td>
+                        <td className="text-xl font-bold">
+                            {course.title}
+                        </td>
+                    </tr>
+                    <tr
+                    className="
+                    w-full
+                    flex
+                    flex-row
+                    gap-8
+                    items-center
+                    "
+                    >
+                        <td>
+                            Professor
+                        </td>
+                        <td className="text-xl font-bold">
+                            {teacherName}
+                        </td>
+                    </tr>
+                    <tr
+                    className="
+                    w-full
+                    flex
+                    flex-row
+                    gap-8
+                    items-center
+                    "
+                    >
+                        <td>
+                            Price
+                        </td>
+                        <td className="text-xl font-bold">
+                            45€
+                        </td>
+                    </tr>
+                </tbody>
             </div>
         </div>
     )
@@ -138,7 +186,16 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
     if (step === STEPS.CALENDAR) {
         bodyContent = (
             <div className="flex flex-col gap-8">
-                
+                <Heading
+                title="When do you want to take the course ?"
+                subtitle="Choose a date"
+                />
+                <div className="flex flex-row gap-8 items-center justify-center">
+                    <Calendar
+                    value={dateSelect}
+                    onChange={(date) => setDate(date)}
+                    />
+                </div>
             </div>
         )
     }
@@ -147,16 +204,27 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
         bodyContent = (
             <div className="flex flex-col gap-8">
                 <Heading
-                title="What is the price of your course ?"
-                subtitle="Set a price"
+                title="What tariff do you want to set ?"
+                subtitle="Choose a price"
                 />
-                <Input 
-                id="price"
-                label="Price"
-                register={register}
-                errors={errors}
-                formatPrice
-                />
+                <div
+                className="flex flex-row gap-12 items-center justify-center"
+                >
+                    <button key={course.id} className="col-span-1">
+                        <SubjectButton
+                        label="7€"
+                        selected={"7€" === watch('price')}
+                        onClick={(value) => setCustomValue('price', value)}
+                        />
+                    </button>
+                    <button key={course.id} className="col-span-1">
+                        <SubjectButton
+                        label="24€"
+                        selected={"24€" === watch('price')}
+                        onClick={(value) => setCustomValue('price', value)}
+                        />
+                    </button>
+                </div>
             </div>
         )
     }
@@ -165,10 +233,14 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
         bodyContent = (
             <div className="flex flex-col gap-8">
                 <Heading
-                title="What are the tags of your course ?"
-                subtitle="Choose tags"
+                title="Do you have any questions ?"
+                subtitle="Write them here to the teacher"
                 />
-                <Search />
+                <textarea
+                {...register('questions')}
+                className="w-full h-40 p-4 border-[1px] border-neutral-200 rounded-xl"
+                placeholder="Enter your questions here."
+                />
             </div>
         )
     }

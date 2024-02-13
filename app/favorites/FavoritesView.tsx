@@ -58,6 +58,7 @@ const FavoritesView: React.FC<FavoritesViewProps> = ({
             ">
             {favorites.map((favorite) => (
                 <CourseCard
+                key={favorite.id}
                 data={favorite}
                 currentUser={currentUser}
                 />
