@@ -61,7 +61,7 @@ const TeacherDashboardTable: React.FC<TeacherDashboardTableProps> = ({
                         <input type="checkbox" className="cursor-pointer rounded" />
                     </td>
                     <td className="border px-4 py-2">{course.subjectId}</td>
-                    <td className="border px-4 py-2">{course.title}</td>
+                    <td className="border px-4 py-2 hover:cursor-pointer hover:underline" onClick={()=>router.push(`/courses/${course.id}`)}>{course.title}</td>
                     <td className="border px-4 py-2 text-center">24</td>
                     <td className="border px-4 py-2 text-center">$792</td>
                     <td className="border px-4 py-2 text-center">Posted</td>

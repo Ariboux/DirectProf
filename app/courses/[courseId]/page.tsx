@@ -29,6 +29,7 @@ const CoursePage = async ({ params } : { params: IParams }) => {
         <EnrollCourseModal course={course} student={currentUser} teacherName={teacher.name} />
         <CoursePresentation
             currentUser={currentUser}
+            currentTeacher={currentTeacher}
             courseId={course.id}
             courseName={course.title}
             courseDescription={course.description ?? ''}

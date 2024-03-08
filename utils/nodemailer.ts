@@ -7,5 +7,4 @@ const transporter = nodemailer.createTransport({
     pass: 'vokz guae dkys oson ',
   },
 });
-// vokz guae dkys oson 
 export default transporter;
