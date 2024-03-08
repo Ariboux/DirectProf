@@ -39,10 +39,13 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
     const { theme } = useTheme();
     const [dateSelect, setDate] = useState(new Date());
     
-    if(!course || !student) {
-        toast.error('An error occurred while enrolling the course.');
-        return null;
-    }
+    const actionLabel = useMemo(() => {
+        return step === STEPS.QUESTION ? 'Enroll' : 'Next';
+    }, [step]);
+    
+    const secondaryActionLabel = useMemo(() => {
+        return step === STEPS.RECAP ? undefined : 'Back';
+    }, [step]);
 
     const {
         register,
@@ -54,14 +57,18 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
     } = useForm<FieldValues>({
         defaultValues: {
             studentId:'',
-            date:''
-            
+            date:''            
         }
     });
-
+    
+    if(!course || !student) {
+        toast.error('An error occurred while enrolling the course.');
+        return null;
+    }
+        
     const date = watch('date');
     const question = watch('question');
-
+    
     const setCustomValue = (id: string, value: any) => {
         setValue(id, value, {
             shouldDirty: true,
@@ -69,22 +76,22 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
             shouldValidate: true
         });
     }
-
+    
     const onBack = () => {
         setStep((value) => value - 1);
     }
-
+    
     const onNext = () => {
         setStep((value) => value + 1);
     }
-
+    
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         if (step !== STEPS.QUESTION) {
             return onNext();
         }
-
+        
         setIsLoading(true);
-
+        
         axios.post('/api/enroll', data)
         .then((response) => {
             toast.success('Course enrolled successfully!');
@@ -103,14 +110,7 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
             setIsLoading(false);
         });
     }
-
-    const actionLabel = useMemo(() => {
-        return step === STEPS.QUESTION ? 'Enroll' : 'Next';
-    }, [step]);
-
-    const secondaryActionLabel = useMemo(() => {
-        return step === STEPS.RECAP ? undefined : 'Back';
-    }, [step]);
+    
 
     let bodyContent = (
         <div className="flex flex-col gap-8">
