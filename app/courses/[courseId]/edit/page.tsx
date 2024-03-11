@@ -2,6 +2,7 @@ import getCourseById from "@/app/actions/getCourseById";
 import getCurrentTeacher from "@/app/actions/getCurrentTeacher";
 import Container from "@/app/components/Container";
 import NotLoggedIn from "@/app/components/NotLoggedIn";
+import Calendar from "@/app/components/scheduler/calendar";
 
 import React from "react";
 
@@ -9,7 +10,7 @@ interface EditCourseProps {
     courseId: string;
 }
 
-const EditCoursePage = async ({ params } : { params: EditCourseProps}) => {
+const EditCoursePage = async ({ params }: { params: EditCourseProps }) => {
     const currentTeacher = await getCurrentTeacher();
     const course = await getCourseById(params);
     if (!currentTeacher) {
@@ -20,9 +21,11 @@ const EditCoursePage = async ({ params } : { params: EditCourseProps}) => {
     else {
         return (
             <Container>
-                <div className="flex flex-col justify-center items-center h-full gap-4 pt-16">
-                    <h1>Edit Course</h1>
-                </div>
+                <h1 className="text-2xl font-semibold text-center pt-16">
+                    Edit Course: {course.title}
+                </h1>
+                <hr className="my-4 pb-5" />
+                <Calendar />
             </Container>
         );
     }

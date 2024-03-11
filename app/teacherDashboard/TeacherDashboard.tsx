@@ -65,7 +65,7 @@ const TeacherDashboardTable: React.FC<TeacherDashboardTableProps> = ({
                     <td className="border px-4 py-2 text-center">24</td>
                     <td className="border px-4 py-2 text-center">$792</td>
                     <td className="border px-4 py-2 text-center">Posted</td>
-                    <td className="border px-2 py-2 text-center">
+                    <td className="border px-2 py-2 text-center" onClick={()=>router.push(`/courses/${course.id}/edit`)}>
                         <BiSolidPencil className="cursor-pointer hover:text-blue-500 mx-auto" />
                     </td>
                     <td className="border py-2 self-center">
