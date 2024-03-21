@@ -23,6 +23,7 @@ model User {
   coursesEnrolled   CourseEnrollment[]
   accounts          Account[]
   favoriteCourses   Course[]
+  sessions          Session[]
 }
 
 model Account{
@@ -56,6 +57,7 @@ model Course {
   studentFav      User?               @relation(fields: [studentId], references: [id])
   studentId       String?             @db.ObjectId
   coursesEnrolled CourseEnrollment[]
+  sessions        Session[]
   createdAt       DateTime            @default(now())
   updatedAt       DateTime            @updatedAt
 }
@@ -88,4 +90,19 @@ model CourseEnrollment {
   course    Course      @relation(fields: [courseId], references: [id])
   courseId  String      @db.ObjectId
   createdAt DateTime    @default(now())
+}
+
+model Session {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  label       String
+  student     User?     @relation(fields: [studentId], references: [id])
+  studentId   String?   @db.ObjectId
+  course      Course    @relation(fields: [courseId], references: [id])
+  courseId    String    @db.ObjectId
+  dateStart   DateTime
+  dateEnd     DateTime
+  description String?
+  session     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
