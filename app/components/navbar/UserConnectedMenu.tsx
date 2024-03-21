@@ -31,7 +31,7 @@ const UserConnectedMenu: React.FC<UserConnectedMenuProps> = ({
             label="My Profile"
             />
             <MenuItem
-            onClick={()=>{}}
+            onClick={()=>router.push('/mycourses')}
             label="My Courses"
             />
             <MenuItem

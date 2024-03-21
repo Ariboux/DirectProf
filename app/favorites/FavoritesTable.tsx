@@ -53,7 +53,6 @@ const FavoritesTable: React.FC<FavoritesTableProps> = ({
                 <th className={`px-4 py-2 ${theme==='dark'?'':'border'}`}>Course</th>
                 <th className={`px-2 py-2 ${theme==='dark'?'':'border'}`}>Teacher</th>
                 <th className={`px-2 py-2 ${theme==='dark'?'':'border'}`}>Price</th>
-                <th className={`px-2 py-2 ${theme==='dark'?'':'border'}`}>Status</th>
             </tr>
         </thead>
         <tbody>
@@ -64,11 +63,10 @@ const FavoritesTable: React.FC<FavoritesTableProps> = ({
                 ${count % 2 === 0 ? (theme==='dark'? 'bg-neutral-700' : 'bg-neutral-100') : (theme==='dark'? 'bg-neutral-800' : 'bg-neutral-200')}
                 `}>
                     <td className="border px-4 py-2">{course.subjectId}</td>
-                    <td className="border px-4 py-2">{course.title}</td>
+                    <td className="border px-4 py-2 hover:cursor-pointer hover:underline" onClick={()=>router.push(`/courses/${course.id}`)}>{course.title}</td>
                     <td className="border px-4 py-2">{course.teacherId}</td>
                     <td className="border px-4 py-2 text-center">$792</td>
-                    <td className="border px-4 py-2 text-center">Posted</td>
-                    <td className="border px-2 py-2 text-center" onClick={() => {}}>
+                    <td className="border px-2 py-2 text-center" onClick={() => {}} title="Remove from favorites">
                         <HeartButton courseId={course.id} currentUser={currentUser} table />
                     </td>
                 </tr>

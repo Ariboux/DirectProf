@@ -8,6 +8,7 @@ import CoursePresentation from "./CoursePresentation";
 
 import React from "react";
 import EnrollCourseModal from "@/app/components/modals/EnrollCourseModal";
+import getSessionsByCourse from "@/app/actions/getSessionsByCourse";
 
 interface IParams {
     courseId?: string;
@@ -19,6 +20,7 @@ const CoursePage = async ({ params } : { params: IParams }) => {
     const course = await getCourseById(params);
     const subject = await getSubjectById({ subjectId: course.subjectId });
     const teacher = await getTeacherById({ teacherId: course.teacherId });
+    const sessions = await getSessionsByCourse(params);
     if(!currentUser && !currentTeacher) {
         return (
             <NotLoggedIn />
@@ -26,7 +28,7 @@ const CoursePage = async ({ params } : { params: IParams }) => {
     }
     return (
         <>
-        <EnrollCourseModal course={course} student={currentUser} teacherName={teacher.name} />
+        <EnrollCourseModal course={course} student={currentUser} teacherName={teacher.name} sessions={sessions} />
         <CoursePresentation
             currentUser={currentUser}
             currentTeacher={currentTeacher}

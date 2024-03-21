@@ -1,78 +1,35 @@
 'use client';
 
-import { useSearchParams } from "next/navigation"
-import Container from "../components/Container";
-import useSWR from "swr";
-import CourseCard from "../components/cards/CourseCard";
-import { useEffect } from "react";
-import getCurrentUser from "../actions/getCurrentUser";
-import { get } from "http";
-import EmptyState from "../components/EmptyState";
-
-const fetchCourses = async (url: string) => {
-    const response = await fetch(url);
-
-    if(!response.ok) {
-        throw new Error('An error occured while fetching the data.');
-    }
-
-    return response.json();
-};
-
+import { useEffect, useState } from 'react';
+import SearchPageResults from './SearchPage';
+import getCurrentTeacher from '../actions/getCurrentTeacher';
+import getCurrentUser from '../actions/getCurrentUser';
 
 const SearchPage = () => {
-    const search = useSearchParams();
+    const [currentTeacher, setCurrentTeacher] = useState(null as any);
+    const [currentUser, setCurrentUser] = useState(null as any);
+    const [searchQuery, setSearchQuery] = useState(null as any);
 
-    const searchQuery = search ? search.get('q') : null;
+    useEffect(() => {
+        const searchParams = new URLSearchParams(window.location.search);
+        const query = searchParams.get('q');
+        setSearchQuery(query);
+        // async function fetchData() {
+        //     const teacher = await getCurrentTeacher();
+        //     setCurrentTeacher(teacher);
+        //     const user = await getCurrentUser();
+        //     setCurrentUser(user);
+        // }
+        // fetchData();
+    }, []);
 
-    const { data, isLoading } = useSWR((`/api/search?q=${searchQuery}`), fetchCourses);
-    if(!data) return (
-        <div className="text-2xl font-semibold text-center w-full cursor-wait">
-            Loading...
-        </div>
-        );
-        return (
-        <Container>
-            <h1 className="text-2xl font-semibold  pt-16">
-                Results for {searchQuery}
-            </h1>
-            <hr className="my-4" />
-            {data.courses.length === 0 ? (
-                <EmptyState
-                title='No results found'
-                subtitle='Try a different search'
-                returnMenu
-                />
-            ) : (
-            <div className="
-            pt-3
-            grid
-            grid-cols-1
-            sm:grid-cols-2
-            md:grid-cols-3
-            lg:grid-cols-4
-            xl:grid-cols-5
-            2xl:grid-cols-6
-            gap-8
-            justify-items-center
-            ">
-                {isLoading ? (
-                    <div className="text-2xl font-semibold text-center w-full cursor-wait">
-                        Loading...
-                    </div>
-                ) : (
-                    data.courses.map((course: any) => (
-                        <CourseCard
-                        disabled={false}
-                        key={course.id}
-                        data={course}
-                        />
-                    ))
-                )}
-            </div>)}
-
-        </Container>
-    )
-}
+    return (
+        <SearchPageResults
+        searchQuery={searchQuery}
+        // currentTeacher={currentTeacher}
+        //     currentUser={currentUser}
+        />
+    );
+};
 
 export default SearchPage;
