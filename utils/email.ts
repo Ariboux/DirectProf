@@ -15,3 +15,14 @@ export const sendVerificationEmail = async ({ email, token }: EmailData) => {
     console.log('Sending email to: ', email);
     return transporter.sendMail(mailOptions);
 };
+
+export const sendEnrollmentEmail = async ({ email, token }: EmailData) => {
+    const mailOptions = {
+        from: 'DirectProf',
+        to: email,
+        subject: 'You will have a lesson soon!',
+        html: `./emailEnroll.html`,
+    };
+    console.log('Sending email to: ', email);
+    return transporter.sendMail(mailOptions);
+}

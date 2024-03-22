@@ -108,6 +108,10 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
                 // console.log(response.data);
                 enrollCourseModal.onClose();
                 router.push(`/mycourses`);
+                axios.post(`/api/mailEnroled/${student.email}`)
+                    .then(() => {
+                        toast.success("Email of confirmation sent successfully.");
+                    })
             })
             .catch((error) => {
                 toast.error('An error occurred while creating the course.');
