@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import MenuItem from "./MenuItem";
 import { SafeUser } from "@/app/types";
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 
 interface UserConnectedMenuProps {
     currentUser: SafeUser;
@@ -13,6 +14,7 @@ const UserConnectedMenu: React.FC<UserConnectedMenuProps> = ({
     currentUser
 }) => {
     const router = useRouter();
+    const { theme, setTheme } = useTheme();
     return (
         <>
             <div
@@ -39,7 +41,11 @@ const UserConnectedMenu: React.FC<UserConnectedMenuProps> = ({
             label="My Favorites"
             />
             <MenuItem
-            onClick={() => signOut()}
+            onClick={() => {
+                signOut();
+                setTheme('light');
+                router.push('/');
+            }}
             label="Log out"
             />
         </>

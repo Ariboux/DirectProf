@@ -17,11 +17,11 @@ const EditCoursePage = async ({ params }: { params: EditCourseProps }) => {
     if (!currentTeacher) {
         return (
             <NotLoggedIn />
-            );
-        }
-        if (course.teacherId !== currentTeacher.id) {
-            return (
-                <Container>
+        );
+    }
+    if (course.teacherId !== currentTeacher.id) {
+        return (
+            <Container>
                 <h1 className="text-2xl font-semibold text-center pt-16">
                     You are not authorized to edit this course.
                 </h1>

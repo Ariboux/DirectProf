@@ -111,7 +111,7 @@ export default function Calendar(
                         finalSubmition();
                         setTimeout(() => {
                             location.reload();
-                        }, 1000);
+                        }, 1500);
                     }}
                     notLarge
                 />

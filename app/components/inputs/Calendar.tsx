@@ -2,7 +2,6 @@
 
 import Calendar, { CalendarProps } from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import './DarkCalendar.css';
 import { useTheme } from 'next-themes';
 
 interface DatePickerProps {

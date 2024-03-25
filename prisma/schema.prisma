@@ -50,7 +50,7 @@ model Course {
   title           String          
   description     String?         
   image           String?         
-  price           Float?
+  price           String?
   teacher         Teacher             @relation(fields: [teacherId], references: [id])
   teacherId       String              @db.ObjectId
   subject         Subject             @relation(fields: [subjectId], references: [id])
