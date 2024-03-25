@@ -47,7 +47,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
             title: '',
             description: '',
             image: '',
-            // price: '',
+            price: '',
             // tags: []
         }
     });
@@ -56,7 +56,7 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
     const subject = watch('subject');
     const description = watch('description');
     const image = watch('image');
-    // const price = watch('price');
+    const price = watch('price');
     // const tags = watch('tags');
 
     const setCustomValue = (id: string, value: any) => {
@@ -78,6 +78,15 @@ const CreateCourseModal: React.FC<CreateCourseModalProps> = ({
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         if (step !== STEPS.TAGS) {
             return onNext();
+        }
+        if(!data.subject) {
+            return toast.error('Please select a subject.');
+        }
+        if(!data.title) {
+            return toast.error('Please enter a title.');
+        }
+        if(!data.price) {
+            return toast.error('Please enter a price.');
         }
 
         setIsLoading(true);

@@ -6,8 +6,8 @@ import getCurrentUser from "../actions/getCurrentUser";
 
 interface SearchPageProps {
     searchQuery: string | null;
-    // currentTeacher: any;
-    // currentUser: any;
+    currentTeacher: any;
+    currentUser: any;
 }
 
 const fetchCourses = async (url: string) => {
@@ -22,7 +22,9 @@ const fetchCourses = async (url: string) => {
 
 
 const SearchPageResults: React.FC<SearchPageProps> =  ({
-    searchQuery
+    searchQuery,
+    currentTeacher,
+    currentUser
 }) => {
 
     const { data, isLoading } = useSWR((`/api/search?q=${searchQuery}`), fetchCourses);
@@ -66,8 +68,8 @@ const SearchPageResults: React.FC<SearchPageProps> =  ({
                     ) : (
                         data.courses.map((course: any) => (
                             <CourseCard
-                                // currentUser={currentUser}
-                                // currentTeacher={currentTeacher}
+                                currentUser={currentUser}
+                                currentTeacher={currentTeacher}
                                 disabled={false}
                                 key={course.id}
                                 data={course}

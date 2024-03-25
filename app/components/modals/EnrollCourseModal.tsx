@@ -95,6 +95,9 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
         if (!data.sessionId) {
             return toast.error('Please select a session.');
         }
+        if (!data.price) {
+            return toast.error('Please enter a price.');
+        }
 
         setIsLoading(true);
         console.log("sessionSelected", data);
@@ -108,7 +111,7 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
                 // console.log(response.data);
                 enrollCourseModal.onClose();
                 router.push(`/mycourses`);
-                axios.post(`/api/mailEnroled/${student.email}`)
+                axios.post(`/api/mailEnroled/${student.email}`, data)
                     .then(() => {
                         toast.success("Email of confirmation sent successfully.");
                     })
@@ -143,7 +146,7 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
                             </tr>
                             <tr>
                                 <td className="w-1/2 text-right pr-4">Price:</td>
-                                <td className="w-1/2 text-xl font-bold">45€</td>
+                                <td className="w-1/2 text-xl font-bold">{course.price?course.price+"€":"10€"}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -184,6 +187,7 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
             </div>
         )
     }
+    const priceOrCustom = course.price ? course.price+"€" : "10€";
 
     if (step === STEPS.PRICE) {
         bodyContent = (
@@ -197,18 +201,18 @@ const EnrollCourseModal: React.FC<EnrollCourseModalProps> = ({
                 >
                     <button key={course.id} className="col-span-1">
                         <SubjectButton
-                            label="7€"
-                            selected={"7€" === watch('price')}
+                            label={priceOrCustom}
+                            selected={priceOrCustom === watch('price')}
                             onClick={(value) => setCustomValue('price', value)}
                         />
                     </button>
-                    <button key={course.id} className="col-span-1">
+                    {/* <button key={course.id} className="col-span-1">
                         <SubjectButton
                             label="24€"
                             selected={"24€" === watch('price')}
                             onClick={(value) => setCustomValue('price', value)}
                         />
-                    </button>
+                    </button> */}
                 </div>
             </div>
         )

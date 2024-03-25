@@ -20,7 +20,7 @@ export async function POST(
         title,
         description,
         image,
-        // price: '',
+        price,
         // tags: []
     } = body;
 
@@ -37,7 +37,7 @@ export async function POST(
             title,
             description,
             image,
-            // price,
+            price,
             // tags,
             subject: { connect: { id: subjectId } },
             teacher: { connect: { id: currentTeacher.id } },

@@ -1,4 +1,4 @@
-import { sendEnrollmentEmail } from "@/utils/email";
+import { sendEnrollmentEmail } from "@/utils2/email";
 import { NextResponse } from "next/server";
 
 interface IParams {
@@ -12,6 +12,8 @@ export async function POST(
     const { mailString } = params;
     if (!mailString || typeof(mailString)!=='string') throw new Error("The mail is invalid");
 
-    await sendEnrollmentEmail({ email: mailString, token: "token" });
+    const data = await request.json();
+
+    await sendEnrollmentEmail({ email: mailString, token: "token", data: data });
     return NextResponse.json({message: "Email sent"});
 }

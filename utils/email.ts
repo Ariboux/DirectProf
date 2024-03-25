@@ -1,4 +1,6 @@
 import transporter from './nodemailer';
+import fs from 'fs';
+import path from 'path';
 
 interface EmailData {
     email: string;
@@ -16,13 +18,3 @@ export const sendVerificationEmail = async ({ email, token }: EmailData) => {
     return transporter.sendMail(mailOptions);
 };
 
-export const sendEnrollmentEmail = async ({ email, token }: EmailData) => {
-    const mailOptions = {
-        from: 'DirectProf',
-        to: email,
-        subject: 'You will have a lesson soon!',
-        html: `./emailEnroll.html`,
-    };
-    console.log('Sending email to: ', email);
-    return transporter.sendMail(mailOptions);
-}

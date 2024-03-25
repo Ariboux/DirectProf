@@ -27,7 +27,7 @@ export default async function myCourses() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {coursesEnrolled.map((sessions:any) =>
                         sessions.session.map((session:any) => (
-                            <div key={session.id} className="bg-white shadow-md rounded-lg p-4">
+                            <div key={session.id} className="bg-white shadow-md rounded-lg p-4 dark:bg-gray-800">
                                 <h1 className="text-xl font-semibold">{session.label}</h1>
                                 <p className="text-gray-500">{session.description}</p>
                                 <hr className="my-2" />
